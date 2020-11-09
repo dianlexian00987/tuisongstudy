@@ -1,11 +1,12 @@
 <template>
   <div class="recommend">
-    我是推荐
+    div.
   </div>
 
 </template>
 
 <script>
+import {getRecommend} from 'api/Recommend'
 export default {
   name: 'Recommend',
   created () {
@@ -13,7 +14,9 @@ export default {
   },
   methods: {
     _getRecommend () {
-
+      getRecommend().then((res) => {
+        console.log(res)
+      })
     }
   }
 }
