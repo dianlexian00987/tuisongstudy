@@ -4,7 +4,9 @@
         <slot>
         </slot>
       </div>
-      <div class="dots"></div>
+      <div class="dots">
+        <span class="dot" :class="{active:currentPageIndex === index}" v-for="(doto,index) in dotos" :key="index"></span>
+      </div>
   </div>
 </template>
 
@@ -27,12 +29,20 @@ export default {
       default: 4000
     }
   },
+  data () {
+    return {
+      dotos: [],
+      currentPageIndex: 0
+    }
+  },
   mounted () {
     setTimeout(() => {
       // 获取图片的宽度
       this.getImageWhiths()
       // 初始化batter-scroll
       this.initBatterScroll()
+      // 初始化点
+      this.initDotos()
     }, 20)
   },
   methods: {
@@ -56,6 +66,9 @@ export default {
         scrollY: false,
         momentum: false
       })
+    },
+    initDotos () {
+      this.dotos = new Array(this.children.length)
     }
   }
 }
@@ -63,11 +76,10 @@ export default {
 
 <style scoped lang="stylus">
   .slider
-    position absolute
-    left 0
-    top  0
+    position relative
     width 100%
-    height 100%
+    height 0
+    padding-bottom 40%
     .slider-group
       position: relative
       overflow: hidden
@@ -76,7 +88,24 @@ export default {
         float: left
         box-sizing: border-box
         overflow: hidden
+        text-align center
         .img
           display block
           width 100%
+    .dots
+      position absolute
+      left 0
+      right 0
+      text-align center
+      bottom 0
+      .dot
+        display inline-block
+        width 10px
+        height 10px
+        border-radius 5px
+        background white
+        margin 0 5px
+        &.active
+          background rebeccapurple
+
 </style>
