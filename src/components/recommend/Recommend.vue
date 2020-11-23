@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {getRecommend, getSongList} from 'api/Recommend'
+import {getRecommend, getDiscList} from 'api/Recommend'
 import {ERR_OK} from 'api/config'
 import Slider from 'base/slider/Slider'
 export default {
@@ -56,9 +56,10 @@ export default {
     },
 
     _getSongList () {
-      getSongList().then((res) => {
+      getDiscList().then((res) => {
+        console.log(res)
         if (res.code === ERR_OK) {
-          console.log(res)
+
         }
       })
     },

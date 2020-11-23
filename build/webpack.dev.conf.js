@@ -9,8 +9,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+const express=require('express')
+const app=express()
+const apiRoutes=express.Router()
 const axios = require('axios')
-const bodyParser = require('body-parser')
+app.use('/api',apiRoutes)
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -25,10 +28,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   // these devServer options should be customized in /config/index.js
   devServer: {
     before(app){
-      app.use(bodyParser.urlencoded({extended: true}))
+     // app.use(bodyParser.urlencoded({extended: true}))
 
-      app.get('/api/getCdInfo', function (req, res) {
-        const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+      app.get('/api/getDiscList', function (req, res) {
+        const url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
         axios.get(url, {
           headers: {
             referer: 'https://c.y.qq.com/',
@@ -36,15 +39,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           },
           params: req.query
         }).then((response) => {
-          let ret = response.data
-          if (typeof ret === 'string') {
-            const reg = /^\w+\(({.+})\)$/
-            const matches = ret.match(reg)
-            if (matches) {
-              ret = JSON.parse(matches[1])
-            }
-          }
-          res.json(ret)
+          res.json(response.data)
         }).catch((e) => {
           console.log(e)
         })
