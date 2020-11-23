@@ -10,13 +10,13 @@
     <div class="class-body-content">
       <h3 class="hot-music-title">热门歌曲推荐</h3>
       <ul class="hot-music-list">
-        <li class="hot-music-item">
+        <li class="hot-music-item" v-for="(item,index) in musicList" :key="index">
           <div class="hot-img">
-            <img src="http://p.qpic.cn/music_cover/LR2EG6KhuzNGse4RDgSibnT996ybfSKro0ZiakvxSyLpibxMaQJibtNGow/600?n=1" alt="" class="img">
+            <img :src="item.imgurl" alt="" class="img">
           </div>
           <div class="hot-content">
-            <h4 class="title">你要听神马鸭？</h4>
-            <p class="content">华语伤感 ：泪流不止，只因想你</p>
+            <h4 class="title" v-text="item.creator.name"></h4>
+            <p class="content" v-text="item.dissname"></p>
           </div>
         </li>
       </ul>
@@ -42,7 +42,8 @@ export default {
   },
   data () {
     return {
-      swipper: []
+      swipper: [],
+      musicList: []
     }
   },
   methods: {
@@ -57,9 +58,9 @@ export default {
 
     _getSongList () {
       getDiscList().then((res) => {
-        console.log(res)
         if (res.code === ERR_OK) {
-
+          console.log(res)
+          this.musicList = res.data.list
         }
       })
     },
